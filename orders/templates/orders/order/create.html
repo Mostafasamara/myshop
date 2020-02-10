@@ -1,0 +1,48 @@
+{% extends "shop/base.html" %}
+{% block title %}
+Checkout
+{% endblock %}
+{% block content %}
+<br>
+<br>
+
+<h1>Booking</h1>
+
+<!-- ORDAR INFO -->
+
+<div class="order-info">
+<h3>Your order</h3>
+
+
+
+<ul>
+{% for item in cart %}
+<li>
+{{ item.quantity }}x {{ item.product.name }}
+<span>${{ item.total_price|floatformat:"2" }}</span>
+</li>
+{% endfor %}
+{% if cart.coupon %}
+<li>
+"{{ cart.coupon.code }}" ({{ cart.coupon.discount }}% off)
+<span>- ${{ cart.get_discount|floatformat:"2" }}</span>
+</li>
+{% endif %}
+</ul>
+<p>Total: ${{ cart.get_total_price_after_discount|floatformat:"2" }}</p>
+</div>
+<br>
+<br>
+<div class="offset-3 col-md-6">
+  <form class="form-inline" action="." method="post">
+    <div class="form-group">
+      {{ form.as_p }}
+      <br>
+      <p><input class="btn btn-primary" type="submit" value="Place order"></p>
+      {% csrf_token %}
+    </div>
+  {% csrf_token %}
+  </form>
+</div>
+
+{% endblock %}
